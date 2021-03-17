@@ -11,23 +11,20 @@ import "../../assets/css/loginpage.css";
 
 function Login(props) {
   const [state, setState] = useState({
-    user: "",
+    username: "",
     password: "",
   });
   // Handle Submit
-  Axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { user, password } = state;
+    const { username, password } = state;
 
     Axios.post("http://localhost:3001/api/user/login", {
-      user,
+      username,
       password,
     })
       .then((response) => {
         const { result, message, auth, token } = response.data;
-        console.log("login response data", response);
-
         if (auth) {
           toast.success(message, {
             position: toast.POSITION.TOP_CENTER,
@@ -54,8 +51,8 @@ function Login(props) {
           aria-label="User Name..."
           label="userName"
           type="text"
-          value={state.user}
-          onChange={(val) => setState({ ...state, user: val })}
+          value={state.username}
+          onChange={(val) => setState({ ...state, username: val })}
         />
         <Input
           aria-label="Password..."

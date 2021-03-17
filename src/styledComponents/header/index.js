@@ -29,14 +29,15 @@ function Header(props) {
   const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
 
-  console.log("userAccount suer id :", userAccount.userID);
+  console.log("userAccount user id :", userAccount.userID);
 
   // useEffect
   useEffect(() => {
-    Axios.get(`http://localhost:3001/api/request/retrieve/${userAccount.userID}`)
+    Axios.get(
+      `http://localhost:3001/api/request/retrieve/${userAccount.userID}`
+    )
       .then((result) => {
         const { data } = result;
-        console.log("pending result :", result);
         props.userRequestAction(data.result[0].Pendings);
       })
       .catch((err) => {
@@ -56,12 +57,10 @@ function Header(props) {
   //logout
   const logout = (e) => {
     e.preventDefault();
-    console.log("props", props);
     props.loggedOutAction();
     alert("Logout Successful");
     history.push("/");
   };
-  console.log("Menu", showMenu);
   return (
     <>
       <div className="header__logo">
@@ -71,7 +70,15 @@ function Header(props) {
           <DehazeIcon />
         </IconButton>
       </div>
-      <div className={`${showMenu ? "header__menu-show" : "header__menu"}`}>
+      <div
+        className={
+          showMenu && pendingCount === 1
+            ? "header__menu-showWithPending"
+            : showMenu && pendingCount === 0
+            ? "header__menu-show"
+            : "header__menu"
+        }
+      >
         <MenuLink to="/">
           <Menu src={Home} title="Home" />
         </MenuLink>
@@ -99,7 +106,8 @@ function Header(props) {
         <button onClick={logout}>Logout</button>
       </div>
       <div className={`${pendingCount === 0 ? "request-hide" : "request"}`}>
-        <CircularProgress />
+        <p>pending request</p>
+        <CircularProgress color="primary" size="18px" />
         <p>{pendingCount}</p>
       </div>
     </>

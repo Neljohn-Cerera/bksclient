@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import "../assets/css/homePage/homePage_layout.css";
 import Header from "../styledComponents/header";
 import Footer from "../styledComponents/footer";
@@ -10,7 +11,6 @@ import {
 } from "../components/homePage";
 
 function HomePage() {
-
   return (
     <div className="homePage">
       <header>
@@ -31,4 +31,3 @@ function HomePage() {
 }
 
 export default HomePage;
-

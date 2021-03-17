@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import Axios from "axios";
 import Title, { SubTitle } from "../styledComponents/Title";
 import styled from "styled-components";
 import Ellipse from "../assets/images/Ellipse.svg";
 import Button from "../styledComponents/Button";
-import { connect } from "react-redux";
 
 const AccountTitle = styled(Title)`
   text-align: center;
@@ -63,46 +60,47 @@ const EditButton = styled(Button)`
   margin-top: 30px;
 `;
 
-function Account(props) {
-  const { userID } = props.userAccount;
-  const [account, setAccount] = useState({});
-
-  // useEffect
-  useEffect(() => {
-    Axios.get(`http://localhost:3001/api/user/${userID}`)
-      .then((result) => {
-        setAccount(result.data[0]);
-        // console.log("RETRIEVE ACCOUNT result : ", result);
-      })
-      .catch((err) => {
-        console.log("Admin front end error", err);
-      });
-  }, [userID]);
-
-
+function Account({ data, hhData }) {
+  console.log("hh data", hhData.data);
   return (
     <>
       <AccountTitle>Profile</AccountTitle>
       <SectioStyled>
-        <AccountSubtitle>HouseHold</AccountSubtitle>
+        <AccountSubtitle>HouseHold </AccountSubtitle>
+
         <SectionContainer>
+          <BoldSubtitle>HouseHold ID</BoldSubtitle>
+          <Text>
+            <Img src={Ellipse} alt="Logo" /> {data.household_ID}
+            <br />
+          </Text>
           <BoldSubtitle>HouseHold Head</BoldSubtitle>
-          <Text>
-            <Img src={Ellipse} alt="Logo" /> Neljohn Rentillo Cerera <br />
-          </Text>
+          {hhData.data.map((hh) => {
+            if (hh.household_head === "") return null;
+            else
+              return (
+                <div key={hh.userid}>
+                  <Text>
+                    <Img src={Ellipse} alt="Logo" /> {hh.household_head}
+                    <br />
+                  </Text>
+                </div>
+              );
+          })}
+
           <BoldSubtitle marginTop>HouseHold Members</BoldSubtitle>
-          <Text>
-            <Img src={Ellipse} alt="Logo" /> Neljohn 1 Rentillo Cerera <br />
-          </Text>
-          <Text>
-            <Img src={Ellipse} alt="Logo" /> Neljohn 2 Rentillo Cerera <br />
-          </Text>
-          <Text>
-            <Img src={Ellipse} alt="Logo" /> Neljohn 3 Rentillo Cerera <br />
-          </Text>
-          <Text>
-            <Img src={Ellipse} alt="Logo" /> Neljohn 4 Rentillo Cerera <br />
-          </Text>
+          {hhData.data.map((hh) => {
+            if (hh.household_head) return null;
+            else
+              return (
+                <div key={hh.userid}>
+                  <Text>
+                    <Img src={Ellipse} alt="Logo" /> {hh.household_member}
+                    <br />
+                  </Text>
+                </div>
+              );
+          })}
         </SectionContainer>
       </SectioStyled>
 
@@ -111,35 +109,27 @@ function Account(props) {
         <SectionContainer>
           <BoldSubtitle>Barangay ID</BoldSubtitle>
           <Text paddingLeft>
-            {account.barangayID_no} <br />
-          </Text>
-          <BoldSubtitle>Household ID</BoldSubtitle>
-          <Text paddingLeft>
-            {account.houseHoldID_no} <br />
+            {data.barangayID_no} <br />
           </Text>
           <BoldSubtitle marginTop>Full Name</BoldSubtitle>
           <Text paddingLeft>
-            {account.fullName} <br />
+            {data.fullName} <br />
           </Text>
           <BoldSubtitle marginTop>Address</BoldSubtitle>
           <Text paddingLeft>
-            {account.address} <br />
+            {data.address} <br />
           </Text>
           <BoldSubtitle marginTop>Birthdate</BoldSubtitle>
           <Text paddingLeft>
-            {account.birthDate} <br />
+            {data.birthDate} <br />
           </Text>
           <BoldSubtitle marginTop>Civil Status</BoldSubtitle>
           <Text paddingLeft>
-            {account.civiStatus} <br />
+            {data.civilStatus} <br />
           </Text>
           <BoldSubtitle marginTop>Gender</BoldSubtitle>
           <Text paddingLeft>
-            {account.gender} <br />
-          </Text>
-          <BoldSubtitle marginTop>Household Head Relationship</BoldSubtitle>
-          <Text paddingLeft>
-            Father <br />
+            {data.gender} <br />
           </Text>
         </SectionContainer>
         <EditButton>Edit Profile</EditButton>
@@ -148,10 +138,4 @@ function Account(props) {
   );
 }
 
-//redux set up
-const mapStateToProps = (state) => {
-  return {
-    userAccount: state.user.userAccount,
-  };
-};
-export default connect(mapStateToProps, null)(Account);
+export default Account;
