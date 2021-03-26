@@ -61,7 +61,9 @@ const EditButton = styled(Button)`
 `;
 
 function Account({ data, hhData }) {
-  console.log("hh data", hhData.data);
+  console.log("hh data", hhData);
+  const household = hhData.data[0];
+  console.log("houshold", household);
   return (
     <>
       <AccountTitle>Profile</AccountTitle>
@@ -75,31 +77,33 @@ function Account({ data, hhData }) {
             <br />
           </Text>
           <BoldSubtitle>HouseHold Head</BoldSubtitle>
-          {hhData.data.map((hh) => {
-            if (hh.household_head === "") return null;
-            else
+          {household.map((hh, key) => {
+            if (hh.householdrole === "Head")
               return (
-                <div key={hh.userid}>
+                <div key={hh.userID}>
                   <Text>
-                    <Img src={Ellipse} alt="Logo" /> {hh.household_head}
+                    <Img src={Ellipse} alt="Logo" />
+                    {hh.fullname}
                     <br />
                   </Text>
                 </div>
               );
+            else return null;
           })}
 
           <BoldSubtitle marginTop>HouseHold Members</BoldSubtitle>
-          {hhData.data.map((hh) => {
-            if (hh.household_head) return null;
-            else
+          {household.map((hh) => {
+            if (hh.householdrole === "Member")
               return (
-                <div key={hh.userid}>
+                <div key={hh.userID}>
                   <Text>
-                    <Img src={Ellipse} alt="Logo" /> {hh.household_member}
+                    <Img src={Ellipse} alt="Logo" />
+                    {hh.fullname}
                     <br />
                   </Text>
                 </div>
               );
+            else return null;
           })}
         </SectionContainer>
       </SectioStyled>

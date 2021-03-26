@@ -8,17 +8,8 @@ import { connect } from "react-redux";
 
 function AccountPage(props) {
   const { userID } = props.userAccount;
-  const [hhID, setHhhid] = useState("");
-  console.log("user id: ", userID);
-  const userData = useQuery(["client", { userID }], fetchUserInformation, {
-    onSuccess: (res) => {
-      setHhhid(res[0].household_ID);
-    },
-  });
-  const hhData = useQuery(["client", { hhID }], fetchUserHousehold);
-  console.log("HHID :", hhID);
-  console.log("use query data :", userData);
-  console.log("household data :", hhData);
+  const userData = useQuery(["client", { userID }], fetchUserInformation, {});
+  const hhData = useQuery(["household", { userID }], fetchUserHousehold);
   return (
     <>
       <header>

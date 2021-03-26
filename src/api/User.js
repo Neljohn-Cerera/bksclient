@@ -9,9 +9,9 @@ export const fetchUserInformation = async ({ queryKey }) => {
 };
 
 export const fetchUserHousehold = async ({ queryKey }) => {
-  const [, { hhID }] = queryKey;
+  const [, { userID }] = queryKey;
   const data = await Axios.get(
-    `http://localhost:3001/api/user/household/${hhID}`
+    `http://localhost:3001/api/user/household/${userID}`
   );
   return data.data;
 };
