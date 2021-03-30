@@ -1,7 +1,10 @@
 import Title, { SubTitle } from "../styledComponents/Title";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Ellipse from "../assets/images/Ellipse.svg";
 import Button from "../styledComponents/Button";
+import moment from "moment";
+import { TextField } from "./common/TextField";
 
 const AccountTitle = styled(Title)`
   text-align: center;
@@ -22,6 +25,8 @@ const SectioStyled = styled.section`
 `;
 // inside section container
 const SectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: var(--section-inside-background);
   border: var(--border);
   width: 100%;
@@ -61,11 +66,22 @@ const EditButton = styled(Button)`
 `;
 
 function Account({ data, hhData }) {
-  console.log("hh data", hhData);
+  let history = useHistory();
+  const { state } = useLocation();
+  console.log("state :", state);
   const household = hhData.data[0];
-  console.log("houshold", household);
+
+  const handleClick = () => {
+    history.push({
+      pathname: "/account-edit",
+      state: {
+        data: data,
+      },
+    });
+  };
   return (
     <>
+      {state?.registerSuccessfull ? <div>Updated Successfull</div> : null}
       <AccountTitle>Profile</AccountTitle>
       <SectioStyled>
         <AccountSubtitle>HouseHold </AccountSubtitle>
@@ -77,7 +93,7 @@ function Account({ data, hhData }) {
             <br />
           </Text>
           <BoldSubtitle>HouseHold Head</BoldSubtitle>
-          {household.map((hh, key) => {
+          {household.map((hh) => {
             if (hh.householdrole === "Head")
               return (
                 <div key={hh.userID}>
@@ -111,32 +127,18 @@ function Account({ data, hhData }) {
       <SectioStyled>
         <AccountSubtitle>Personal Informations</AccountSubtitle>
         <SectionContainer>
-          <BoldSubtitle>Barangay ID</BoldSubtitle>
-          <Text paddingLeft>
-            {data.barangayID_no} <br />
-          </Text>
-          <BoldSubtitle marginTop>Full Name</BoldSubtitle>
-          <Text paddingLeft>
-            {data.fullName} <br />
-          </Text>
-          <BoldSubtitle marginTop>Address</BoldSubtitle>
-          <Text paddingLeft>
-            {data.address} <br />
-          </Text>
-          <BoldSubtitle marginTop>Birthdate</BoldSubtitle>
-          <Text paddingLeft>
-            {data.birthDate} <br />
-          </Text>
-          <BoldSubtitle marginTop>Civil Status</BoldSubtitle>
-          <Text paddingLeft>
-            {data.civilStatus} <br />
-          </Text>
-          <BoldSubtitle marginTop>Gender</BoldSubtitle>
-          <Text paddingLeft>
-            {data.gender} <br />
-          </Text>
+          <TextField label_name="Barangay ID" text_value={data.barangayID_no} />
+          <TextField label_name="Full Name" text_value={data.fullName} />
+          <TextField label_name="Age" text_value={data.age} />
+          <TextField label_name="Gender" text_value={data.gender} />
+          <TextField
+            label_name="Birthdate"
+            text_value={moment(data.birthDate).format("MMM D YYYY")}
+          />
+          <TextField label_name="Address" text_value={data.address} />
+          <TextField label_name="Civil Status" text_value={data.civilStatus} />
         </SectionContainer>
-        <EditButton>Edit Profile</EditButton>
+        <EditButton onClick={handleClick}>Edit Profile</EditButton>
       </SectioStyled>
     </>
   );

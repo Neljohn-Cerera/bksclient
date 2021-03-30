@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Header from "../styledComponents/header";
 import Footer from "../styledComponents/footer";
 import Account from "../components/Account";

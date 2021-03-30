@@ -28,9 +28,6 @@ function Header(props) {
   const { pendingCount, userAccount } = props;
   const history = useHistory();
   const [showMenu, setShowMenu] = useState(false);
-
-  console.log("userAccount user id :", userAccount.userID);
-
   // useEffect
   useEffect(() => {
     Axios.get(
@@ -43,7 +40,7 @@ function Header(props) {
       .catch((err) => {
         console.log("Admin front end error", err);
       });
-  }, []);
+  }, [userAccount.userID, props]);
 
   //handle show menu
   const handleCLick = (e) => {
@@ -72,7 +69,7 @@ function Header(props) {
       </div>
       <div
         className={
-          showMenu && pendingCount === 1
+          showMenu && pendingCount > 0
             ? "header__menu-showWithPending"
             : showMenu && pendingCount === 0
             ? "header__menu-show"

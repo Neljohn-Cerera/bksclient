@@ -15,3 +15,25 @@ export const fetchUserHousehold = async ({ queryKey }) => {
   );
   return data.data;
 };
+
+//UPDATE USER
+export const editUser = async ({ id, body }) => {
+  const { fullName, age, gender, birthDate, civilStatus, address } = body;
+  const res = await Axios.put(
+    `http://localhost:3001/api/client/update/${id}`,
+    {
+      fullName,
+      age,
+      gender,
+      birthDate,
+      address,
+      civilStatus,
+    },
+    {
+      headers: {
+        "auth-token": localStorage.getItem("token"),
+      },
+    }
+  );
+  return res;
+};

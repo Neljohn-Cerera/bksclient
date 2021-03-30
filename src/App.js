@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -14,6 +14,7 @@ import {
 } from "./pages";
 import { ProtectedRoute, PublicRoute } from "./routes";
 import { connect } from "react-redux";
+import { EditProfile } from "./components";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -74,6 +75,12 @@ function App(props) {
                 isLoggedInState={isLoggedInState}
                 path="/account"
                 component={AccountPage}
+                exact={true}
+              />
+              <ProtectedRoute
+                isLoggedInState={isLoggedInState}
+                path="/account-edit"
+                component={EditProfile}
                 exact={true}
               />
               {/* Public Route */}

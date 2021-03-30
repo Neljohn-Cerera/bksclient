@@ -1,12 +1,5 @@
 import React from "react";
 import propTypes from "prop-types";
-import styled from "styled-components"
-
-
-const Label = styled.label`
-
-`;
-
 function TextInput({ name, type, placeholder, onChange, value, label }) {
   return (
     <>

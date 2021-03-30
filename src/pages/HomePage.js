@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../assets/css/homePage/homePage_layout.css";
 import Header from "../styledComponents/header";
 import Footer from "../styledComponents/footer";
