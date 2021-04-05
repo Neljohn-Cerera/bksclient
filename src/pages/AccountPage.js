@@ -9,6 +9,7 @@ function AccountPage(props) {
   const { userID } = props.userAccount;
   const userData = useQuery(["client", { userID }], fetchUserInformation, {});
   const hhData = useQuery(["household", { userID }], fetchUserHousehold);
+  console.log("hhdata", hhData);
   return (
     <>
       <header>

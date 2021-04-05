@@ -16,10 +16,12 @@ function Certificate(props) {
   let history = useHistory();
   const { userID } = props.userAccount;
   const [value, setValue] = useState("");
-  const [purpose, setPurpose] = useState("");
   const [others, setOthers] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [otherPurpose, setOtherPurpose] = useState("");
   const [othersDisabled, setOthersDisabled] = useState(true);
-  console.log("certificate userid :", userID);
+  const [otherPurposeDisabled, setOtherPurposeDisabled] = useState(true);
+  const [payment, setPayment] = useState("");
   // onchange
   const onChange = (e) => {
     setValue(e.target.value);
@@ -31,14 +33,21 @@ function Certificate(props) {
     } else {
       setOthersDisabled(true);
     }
-  }, [value]);
+    if (purpose === "otherPurpose") {
+      setOtherPurposeDisabled(false);
+    } else {
+      setOtherPurposeDisabled(true);
+    }
+  }, [value, purpose]);
   // Request Certificate
   const certificateRequest = (e) => {
     e.preventDefault();
+    const finalPurpose = purpose === "otherPurpose" ? otherPurpose : purpose;
     Axios.post("http://localhost:3001/api/request/insert", {
       userID: userID,
       certificateName: value,
-      purpose: purpose,
+      payment: payment,
+      purpose: finalPurpose,
       status: "pending",
     })
       .then((result) => {
@@ -102,7 +111,7 @@ function Certificate(props) {
             onChange={onChange}
             text="Business Certificate"
           />
-          <RadioButton
+          {/* <RadioButton
             value="others"
             checked={value === "others"}
             onChange={onChange}
@@ -116,17 +125,52 @@ function Certificate(props) {
             onChange={(e) => {
               setOthers(e.target.value);
             }}
-          />
+          /> */}
           <Text>
-            Purpose : <br />
+            <SubTitlE>Purpose :</SubTitlE>
+            <RadioButton
+              value="For Whatever purpose it may served"
+              checked={purpose === "For Whatever purpose it may served"}
+              onChange={(e) => setPurpose(e.target.value)}
+              text="For Whatever purpose it may served"
+            />
+            <RadioButton
+              value="otherPurpose"
+              checked={purpose === "otherPurpose"}
+              onChange={(e) => setPurpose(e.target.value)}
+              text="Other purpose : "
+            />
             <TextAreA
-              value={purpose}
+              value={otherPurpose}
+              disabled={otherPurposeDisabled}
               name=""
               cols="25"
               rows="4"
               onChange={(e) => {
-                setPurpose(e.target.value);
+                setOtherPurpose(e.target.value);
               }}
+            />
+          </Text>
+
+          <Text>
+            <SubTitlE>Payment Method :</SubTitlE>
+            <RadioButton
+              value="Cash on Delivery"
+              checked={payment === "Cash on Delivery"}
+              onChange={(e) => setPayment(e.target.value)}
+              text="Cash on Delivery"
+            />
+            <RadioButton
+              value="Gcash"
+              checked={payment === "Gcash"}
+              onChange={(e) => setPayment(e.target.value)}
+              text="Gcash"
+            />
+            <RadioButton
+              value="On Site Payment"
+              checked={payment === "On Site Payment"}
+              onChange={(e) => setPayment(e.target.value)}
+              text="On Site Payment "
             />
           </Text>
           <ButtoN onClick={certificateRequest}>Request</ButtoN>
