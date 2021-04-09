@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "firebase": "^8.3.2",
     "firebase-tools": "^8.14.1",
     "formik": "^2.2.6",
     "moment": "^2.29.1",
